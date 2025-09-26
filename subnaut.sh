@@ -391,7 +391,7 @@ for ((i=0; i <= $#; i++)); do
                 cat "$FFUF_WORDLIST" | sort -u | tee "$FFUF_WORDLIST" &> /dev/null
             fi
         else
-            FFUF_WORDLIST="./wordlists/subdomains.txt"
+            FFUF_WORDLIST="./wordlist/subdomains.txt"
         fi
         TOOLS+=("ffuf")
         break
@@ -466,7 +466,7 @@ fi
 
 # ====[Start script]====
 for DOMAIN in "${DOMAIN_LIST[@]}"; do
-    mkdir "$DOMAIN"
+    mkdir "$DOMAIN" &> /dev/null
     if [ "$SILENT" = false ]; then
         echo -e "[${CYAN}*${NC}] Starting subdomain enumeration for: ${YELLOW}$DOMAIN${NC}"
         echo ""
