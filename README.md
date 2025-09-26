@@ -61,7 +61,7 @@ Make sure the following tools are installed and accessible in your system `PATH`
 2. Clone the repository:
    ```bash
    git clone https://github.com/barakota15/SubNuat.git
-   cd SubNuat
+   cd SubNaut
    ```
 4. Make the script executable:
    ```bash
@@ -82,7 +82,7 @@ Make sure the following tools are installed and accessible in your system `PATH`
 ### Input Flags:
 - `-d, --domain <domain>` : Target domain for enumeration
 - `-D, --domains <file>` : File containing list of domains
-- `-ffuf <file>` : Subdomains wordlist for ffuf
+- `-ffuf <file>` : Subdomains wordlist for ffuf (default: ./wordlist/subdomains.txt)
 - `--api <API key>` : VirusTotal API key (optional)
 ### Filtering Flags:
 - `-t, --tools [tool1,tool2,...]` : Specify which tools to use (default: all)
