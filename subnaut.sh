@@ -369,6 +369,10 @@ for ((i=0; i <= $#; i++)); do
     fi
 done
 
+if [ ${#TOOLS[@]} -eq 0 ]; then
+    TOOLS=("${VALID_TOOLS[@]}")
+fi
+
 for ((i=0; i <= $#; i++)); do
     arg="${!i}"
     next_index=$((i + 1))
@@ -391,16 +395,13 @@ for ((i=0; i <= $#; i++)); do
         fi
         echo -e "[${YELLOW}i${NC}] Your wordlist sets to: '$FFUF_WORDLIST'"
         TOOLS+=("ffuf")
+        break
     else
         if [[ i == $# ]]; then
             FILTERED_TOOLS+=("ffuf")
         fi
     fi
 done
-
-if [ ${#TOOLS[@]} -eq 0 ]; then
-    TOOLS=("${VALID_TOOLS[@]}")
-fi
 
 declare -a FILTERED_TOTAL
 for item in "${TOOLS[@]}"; do
