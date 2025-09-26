@@ -393,7 +393,6 @@ for ((i=0; i <= $#; i++)); do
         else
             FFUF_WORDLIST="./wordlists/subdomains.txt"
         fi
-        echo -e "[${YELLOW}i${NC}] Your wordlist sets to: '$FFUF_WORDLIST'"
         TOOLS+=("ffuf")
         break
     fi
@@ -458,6 +457,9 @@ if [ "$SILENT" = false ]; then
         echo -e "[${CYAN}i${NC}] Display Colors: ${YELLOW}true${NC}"
     else
         echo -e "[${CYAN}i${NC}] Display Colors: ${YELLOW}false${NC}"
+    fi
+    if contains "ffuf" "${FILTERED_TOTAL[@]}"; then
+        echo -e "[${CYAN}i${NC}] FFUF Wordlist: ${YELLOW}${FFUF_WORDLIST}${NC}"
     fi
     echo ""
 fi
