@@ -60,14 +60,14 @@ Make sure the following tools are installed and accessible in your system `PATH`
 1. Install all dependencies above.
 2. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/subnaut.git
-   cd subnaut
+   git clone https://github.com/barakota15/SubNuat.git
+   cd SubNuat
    ```
-3. Make the script executable:
+4. Make the script executable:
    ```bash
    chmod +x subnaut.sh
    ```
-4. Add to PATH:
+5. Add to PATH:
    ```bash
    sudo ln -s $(pwd)/subnaut.sh /usr/local/bin/subnaut
    ```
