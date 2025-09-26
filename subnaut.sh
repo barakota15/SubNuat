@@ -77,7 +77,7 @@ show_help() {
     echo "  INPUT:"
     echo "     -d, --domain <domain>                     Target domain for enumeration"
     echo "     -D, --domains <file>                      File containing list of domains"
-    echo "         --ffuf <file>                         Subdomains wordlist for ffuf"
+    echo "         --ffuf <file>                         Subdomains wordlist for ffuf (default: ./wordlist/subdomains.txt)"
     echo "         --api <API key>                       VirusTotal API key"
     echo ""
     echo "  FILTER:"
