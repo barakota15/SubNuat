@@ -4,6 +4,8 @@
 
 SubNaut is an advanced Bash script that performs extensive subdomain enumeration using multiple tools and techniques, with optional active probing of discovered subdomains.
 
+<img width="1115" height="628" alt="image" src="https://github.com/user-attachments/assets/1c5074c1-9e58-4550-a30a-cab75a8cff6c" />
+
 ---
 
 ## Table of Contents
@@ -13,9 +15,9 @@ SubNaut is an advanced Bash script that performs extensive subdomain enumeration
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [Examples](#examples)
-6. [Contributing](#Contributing)
+6. [Contributing](#contributing)
 7. [License](#license)
-8. [Author](#Author)
+8. [Author](#author)
 
 ---
 
