@@ -13,13 +13,13 @@ NC='\033[0m' # No Color
 # =====[Banner]=====
 banner() {
     echo -e "${YELLOW}"
-    echo "███████╗██╗   ██╗██████╗ ███╗   ██╗ █████╗ ██╗   ██╗████████╗"
-    echo "██╔════╝██║   ██║██╔══██╗████╗  ██║██╔══██╗██║   ██║╚══██╔══╝"
-    echo "███████╗██║   ██║██████╔╝██╔██╗ ██║███████║██║   ██║   ██║   "
-    echo "╚════██║██║   ██║██╔══██╗██║╚██╗██║██╔══██║██║   ██║   ██║   "
-    echo "███████║╚██████╔╝██████╔╝██║ ╚████║██║  ██║╚██████╔╝   ██║   "
-    echo "╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝    ╚═╝   "
-    echo -e "${NC}                                          ${CYAN}By Barakota15 ${NC}@v1.1"
+    echo "██████╗ ██╗██████╗ ███╗   ██╗ █████╗ ██╗   ██╗████████╗"
+    echo "██╔══██╗██║██╔══██╗████╗  ██║██╔══██╗██║   ██║╚══██╔══╝"
+    echo "██║  ██║██║██████╔╝██╔██╗ ██║███████║██║   ██║   ██║   "
+    echo "██║  ██║██║██╔══██╗██║╚██╗██║██╔══██║██║   ██║   ██║   "
+    echo "██████╔╝██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝   ██║   "
+    echo "╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝    ╚═╝   "
+    echo -e "${NC}                             ${CYAN}By Barakota15 ${NC}@v1.1"
     echo ""
 }
 
@@ -141,7 +141,7 @@ done
 
 for arg in "$@"; do
     if [[ "$arg" == "--version" || "$arg" == "-v" ]]; then
-        echo -e "${CYAN}SubNaut version 1.1 by Barakota15${NC}"
+        echo -e "${CYAN}DirNaut version 1.1 by Barakota15${NC}"
         exit 0
     fi
 done
@@ -180,7 +180,7 @@ for arg in "$@"; do
 done
 
 # =====[Check output flags]=====
-OUTPUT_FILE="subdomains.txt"
+OUTPUT_FILE="all_urls.txt"
 
 for ((i=0; i <= $#; i++)); do
     arg="${!i}"
@@ -279,6 +279,8 @@ for ((i=0; i <= $#; i++)); do
             exit 1
         fi
         break
+    else
+        API_KEY="a38a70fa6faa94691e4ce4e045ebe90c5c8726e590e6ccea8724be29b190faa9"
     fi
 done
 
@@ -371,6 +373,30 @@ if [ ${#TOOLS[@]} -eq 0 ]; then
     TOOLS=("${VALID_TOOLS[@]}")
 fi
 
+for ((i=0; i <= $#; i++)); do
+    arg="${!i}"
+    next_index=$((i + 1))
+    next_arg="${!next_index}"
+
+    if [[ "$arg" == "--ffuf" ]]; then
+        if [[ -n "$next_arg" && "$next_arg" != -* ]]; then
+            FFUF_WORDLIST="$next_arg"
+            if [ ! -f "$FFUF_WORDLIST" ]; then
+                echo -e "[${RED}X${NC}] Wordlist file '$FFUF_WORDLIST' does not exist."
+                exit 1
+            elif [ ! -r "$FFUF_WORDLIST" ]; then
+                echo -e "[${RED}X${NC}] Wordlist file '$FFUF_WORDLIST' is not readable."
+                exit 1
+            else
+                cat "$FFUF_WORDLIST" | sort -u | tee "$FFUF_WORDLIST" &> /dev/null
+        else
+            FFUF_WORDLIST="./wordlists/subdomains.txt"
+        fi
+        echo -e "[${YELLOW}i${NC}] Your wordlist sets to: '$FFUF_WORDLIST'"
+        TOOLS+=("ffuf")
+    fi
+done
+
 declare -a FILTERED_TOTAL
 for item in "${TOOLS[@]}"; do
     i="${item}"
@@ -462,6 +488,11 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
     if contains "subenum" "${FILTERED_TOTAL[@]}"; then
         run_command "Running subenum" \
             "subenum -d \"$DOMAIN\" -u wayback,crt,abuseipdb,Amass -o ./${DOMAIN}/subs_subenum.txt"
+    fi
+
+    if contains "ffuf" "${FILTERED_TOTAL[@]}"; then
+        run_command "Running ffuf" \
+            "ffuf -w \"$FFUF_WORDLIST\" -u \"https://FUZZ.$DOMAIN\" -mc 200 -o ./${DOMAIN}/subs_ffuf.txt"
     fi
 
     echo ""
