@@ -519,7 +519,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
 
     # =====[Combine all subs_*.txt into subdomains.txt with echo]=====
     run_command "Combining results into ./${DOMAIN}/${OUTPUT_FILE}" \
-        "cat subs_*.txt | sort -u | tee ./${DOMAIN}/${OUTPUT_FILE}"
+        "cat ./${DOMAIN}/subs_*.txt | sort -u | tee ./${DOMAIN}/${OUTPUT_FILE}"
 
     # =====[Run httpx on the subdomains file and store only status 200 with echo]=====
     if [ "$HTTPX" = true ]; then
@@ -530,12 +530,14 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
     # =====[Clean up temporary subs_* files silently]=====
     echo ""
     rm -f ./${DOMAIN}/subs_*.txt ./${DOMAIN}/resume*
+
+    # =====[Show results]=====
+    if [ "$SILENT" = true ]; then
+        cat ./${DOMAIN}/${OUTPUT_FILE} | sort -u
+    fi
 done
 
-# =====[Show results]=====
-if [ "$SILENT" = true ]; then
-    cat ./*/${OUTPUT_FILE} | sort -u
-fi
+
 
 # =====[Calculate time]=====
 total_time=$SECONDS
