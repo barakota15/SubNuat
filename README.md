@@ -82,6 +82,7 @@ Make sure the following tools are installed and accessible in your system `PATH`
 ### Input Flags:
 - `-d, --domain <domain>` : Target domain for enumeration
 - `-D, --domains <file>` : File containing list of domains
+- `-ffuf <file>` : Subdomains wordlist for ffuf
 - `--api <API key>` : VirusTotal API key (optional)
 ### Filtering Flags:
 - `-t, --tools [tool1,tool2,...]` : Specify which tools to use (default: all)
