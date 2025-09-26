@@ -385,13 +385,16 @@ for ((i=0; i <= $#; i++)); do
                 exit 1
             else
                 cat "$FFUF_WORDLIST" | sort -u | tee "$FFUF_WORDLIST" &> /dev/null
+            fi
         else
             FFUF_WORDLIST="./wordlists/subdomains.txt"
         fi
         echo -e "[${YELLOW}i${NC}] Your wordlist sets to: '$FFUF_WORDLIST'"
         TOOLS+=("ffuf")
     else
-        FILTERED_TOTAL+=("ffuf")
+        if [[ i == $# ]]; then
+            FILTERED_TOOLS+=("ffuf")
+        fi
     fi
 done
 
@@ -406,6 +409,10 @@ for item in "${TOOLS[@]}"; do
         FILTERED_TOTAL+=("$i")
     fi
 done
+if [ ${#FILTERED_TOTAL[@]} -eq 0 ]; then
+    echo -e "[${RED}X${NC}] All tools have been filtered out. Nothing to run."
+    exit 1
+fi
 
 # =====[Check for dependencies]=====
 for dep in "${FILTERED_TOTAL[@]}"; do
