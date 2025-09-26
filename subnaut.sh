@@ -13,13 +13,13 @@ NC='\033[0m' # No Color
 # =====[Banner]=====
 banner() {
     echo -e "${YELLOW}"
-    echo "██████╗ ██╗██████╗ ███╗   ██╗ █████╗ ██╗   ██╗████████╗"
-    echo "██╔══██╗██║██╔══██╗████╗  ██║██╔══██╗██║   ██║╚══██╔══╝"
-    echo "██║  ██║██║██████╔╝██╔██╗ ██║███████║██║   ██║   ██║   "
-    echo "██║  ██║██║██╔══██╗██║╚██╗██║██╔══██║██║   ██║   ██║   "
-    echo "██████╔╝██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝   ██║   "
-    echo "╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝    ╚═╝   "
-    echo -e "${NC}                             ${CYAN}By Barakota15 ${NC}@v1.1"
+    echo "███████╗██╗   ██╗██████╗ ███╗   ██╗ █████╗ ██╗   ██╗████████╗"
+    echo "██╔════╝██║   ██║██╔══██╗████╗  ██║██╔══██╗██║   ██║╚══██╔══╝"
+    echo "███████╗██║   ██║██████╔╝██╔██╗ ██║███████║██║   ██║   ██║   "
+    echo "╚════██║██║   ██║██╔══██╗██║╚██╗██║██╔══██║██║   ██║   ██║   "
+    echo "███████║╚██████╔╝██████╔╝██║ ╚████║██║  ██║╚██████╔╝   ██║   "
+    echo "╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝    ╚═╝   "
+    echo -e "${NC}                                          ${CYAN}By Barakota15 ${NC}@v1.1"
     echo ""
 }
 
@@ -77,6 +77,7 @@ show_help() {
     echo "  INPUT:"
     echo "     -d, --domain <domain>                     Target domain for enumeration"
     echo "     -D, --domains <file>                      File containing list of domains"
+    echo "         --ffuf <file>                         Subdomains wordlist for ffuf"
     echo "         --api <API key>                       VirusTotal API key"
     echo ""
     echo "  FILTER:"
@@ -123,7 +124,7 @@ done
 
 # =====[Check for flags]=====
 for arg in "$@"; do
-    if [[ "$arg" == "--help" || "$arg" == "-h" || "$arg" == "--version" || "$arg" == "-v" || "$arg" == "--list-sources" || "$arg" == "-ls" || "$arg" == "--silent" || "$arg" == "-s" || "$arg" == "--no-color" || "$arg" == "-nc" || "$arg" == "--api" || "$arg" == "--no-httpx" || "$arg" == "--output" || "$arg" == "-o" || "$arg" == "--domains" || "$arg" == "-D" || "$arg" == "--domain" || "$arg" == "-d" || "$arg" == "--tools" || "$arg" == "-t" || "$arg" == "--filter" || "$arg" == "-f" ]]; then
+    if [[ "$arg" == "--help" || "$arg" == "-h" || "$arg" == "--version" || "$arg" == "-v" || "$arg" == "--list-sources" || "$arg" == "-ls" || "$arg" == "--silent" || "$arg" == "-s" || "$arg" == "--no-color" || "$arg" == "-nc" || "$arg" == "--api" || "$arg" == "--no-httpx" || "$arg" == "--output" || "$arg" == "-o" || "$arg" == "--domains" || "$arg" == "-D" || "$arg" == "--domain" || "$arg" == "--ffuf" || "$arg" == "-d" || "$arg" == "--tools" || "$arg" == "-t" || "$arg" == "--filter" || "$arg" == "-f" ]]; then
         continue
     else
         if [[ "$arg" == -* ]]; then
@@ -141,7 +142,7 @@ done
 
 for arg in "$@"; do
     if [[ "$arg" == "--version" || "$arg" == "-v" ]]; then
-        echo -e "${CYAN}DirNaut version 1.1 by Barakota15${NC}"
+        echo -e "${CYAN}SubNaut version 1.1 by Barakota15${NC}"
         exit 0
     fi
 done
@@ -155,6 +156,7 @@ for arg in "$@"; do
         echo "  - findomain"
         echo "  - subenum"
         echo "  - VirusTotal"
+        echo "  - ffuf"
         exit 0
     fi
 done
@@ -180,7 +182,7 @@ for arg in "$@"; do
 done
 
 # =====[Check output flags]=====
-OUTPUT_FILE="all_urls.txt"
+OUTPUT_FILE="subdomains.txt"
 
 for ((i=0; i <= $#; i++)); do
     arg="${!i}"
@@ -279,8 +281,6 @@ for ((i=0; i <= $#; i++)); do
             exit 1
         fi
         break
-    else
-        API_KEY="a38a70fa6faa94691e4ce4e045ebe90c5c8726e590e6ccea8724be29b190faa9"
     fi
 done
 
@@ -369,10 +369,6 @@ for ((i=0; i <= $#; i++)); do
     fi
 done
 
-if [ ${#TOOLS[@]} -eq 0 ]; then
-    TOOLS=("${VALID_TOOLS[@]}")
-fi
-
 for ((i=0; i <= $#; i++)); do
     arg="${!i}"
     next_index=$((i + 1))
@@ -396,6 +392,10 @@ for ((i=0; i <= $#; i++)); do
         TOOLS+=("ffuf")
     fi
 done
+
+if [ ${#TOOLS[@]} -eq 0 ]; then
+    TOOLS=("${VALID_TOOLS[@]}")
+fi
 
 declare -a FILTERED_TOTAL
 for item in "${TOOLS[@]}"; do
