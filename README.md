@@ -60,7 +60,7 @@ Make sure the following tools are installed and accessible in your system `PATH`
 1. Install all dependencies above.
 2. Clone the repository:
    ```bash
-   git clone https://github.com/barakota15/SubNuat.git
+   git clone https://github.com/barakota15/SubNaut.git
    cd SubNaut
    ```
 4. Make the script executable:
