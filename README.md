@@ -50,7 +50,6 @@ Make sure the following tools are installed and accessible in your system `PATH`
 - `findomain`
 - `subenum`
 - `httpx`
-- `anew`
 - `jq`
 - `curl`
 
