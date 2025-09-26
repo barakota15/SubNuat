@@ -113,7 +113,7 @@ contains() {
 }
 
 # =====[Check for dependencies]=====
-dependencies=(httpx anew jq curl)
+dependencies=(httpx jq curl)
 for dep in "${dependencies[@]}"; do
     if ! command -v "$dep" &> /dev/null; then
         echo -e "[${RED}X${NC}] Dependency '$dep' is not installed. Please install it and try again."
@@ -476,7 +476,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
 
     # =====[Combine all subs_*.txt into subdomains.txt with echo]=====
     run_command "Combining results into ./${DOMAIN}/${OUTPUT_FILE}" \
-        "cat subs_*.txt | anew | tee ./${DOMAIN}/${OUTPUT_FILE}"
+        "cat subs_*.txt | sort -u | tee ./${DOMAIN}/${OUTPUT_FILE}"
 
     # =====[Run httpx on the subdomains file and store only status 200 with echo]=====
     if [ "$HTTPX" = true ]; then
