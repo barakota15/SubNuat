@@ -395,13 +395,14 @@ for ((i=0; i <= $#; i++)); do
         fi
         echo -e "[${YELLOW}i${NC}] Your wordlist sets to: '$FFUF_WORDLIST'"
         TOOLS+=("ffuf")
+        k=1
         break
-    else
-        if [[ i == $# ]]; then
-            FILTERED_TOOLS+=("ffuf")
-        fi
     fi
 done
+
+if [ "$k" -eq 1 ]; then
+    FILTERED_TOOLS+=("ffuf")
+fi
 
 declare -a FILTERED_TOTAL
 for item in "${TOOLS[@]}"; do
