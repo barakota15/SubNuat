@@ -541,7 +541,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
 
     # =====[Run httpx on the subdomains file and store only status 200 with echo]=====
     if [ "$HTTPX" = true ]; then
-        run_command "Probing active subdomains with httpx" \
+        run_command "Probing active subdomains with httpx (200 OK)" \
             "cat ./${DOMAIN}/${OUTPUT_FILE} | httpx -mc 200 -o ./${DOMAIN}/active_${OUTPUT_FILE}"
         
         run_command "Probing active subdomains with httpx (403 Forbidden)" \
