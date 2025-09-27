@@ -504,7 +504,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
 
     if contains "ffuf" "${FILTERED_TOTAL[@]}"; then
         run_command "Running ffuf" \
-            "ffuf -w \"$FFUF_WORDLIST\" -u \"https://FUZZ.$DOMAIN\" -mc 200 -o ./${DOMAIN}/subs_ffuf.txt"
+            "ffuf -w \"$FFUF_WORDLIST\" -u \"https://FUZZ.$DOMAIN\" -mc 200 -H \"X-Forwarded-For: 127.0.0.1\" -H \"X-Forwarded-Host: 127.0.0.1\" -o ./${DOMAIN}/ffuf_out.json -of json && jq -r '.results[].url' ./${DOMAIN}/ffuf_out.json > ./${DOMAIN}/subs_subenum.txt && rm ./${DOMAIN}/ffuf_out.json"
     fi
 
     echo ""
