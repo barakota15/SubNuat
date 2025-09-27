@@ -29,13 +29,22 @@ run_command() {
     local command=$2
     if [ "$SILENT" = false ]; then
         echo -ne "[${YELLOW}*${NC}] $description\r"
-
-        if eval "$command" &> /dev/null; then
-            echo -ne "\033[K"
-            echo -e "[${GREEN}✓${NC}] $description"
+        if [[ "$description" != "Running subenum" ]]; then
+            if eval "$command" &> /dev/null; then
+                echo -ne "\033[K"
+                echo -e "[${GREEN}✓${NC}] $description"
+            else
+                echo -ne "\033[K"
+                echo -e "[${RED}X${NC}] $description"
+            fi
         else
-            echo -ne "\033[K"
-            echo -e "[${RED}X${NC}] $description"
+            if eval "$command" &> /dev/null; then
+                echo -ne "\033[K"
+                echo -e "[${GREEN}✓${NC}] $description"
+            else
+                echo -ne "\033[K"
+                echo -e "[${RED}✓${NC}] $description"
+            fi
         fi
     else
         eval "$command" &> /dev/null
