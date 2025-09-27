@@ -43,7 +43,7 @@ run_command() {
                 echo -e "[${GREEN}✓${NC}] $description"
             else
                 echo -ne "\033[K"
-                echo -e "[${RED}✓${NC}] $description"
+                echo -e "[${GREEN}✓${NC}] $description"
             fi
         fi
     else
