@@ -545,7 +545,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
             "cat ./${DOMAIN}/${OUTPUT_FILE} | httpx -mc 200 -o ./${DOMAIN}/active_${OUTPUT_FILE}"
         
         run_command "Probing active subdomains with httpx (403 Forbidden)" \
-            "cat ./${DOMAIN}/${OUTPUT_FILE} | httpx -mc 403 -o ./${DOMAIN}/Forbidden_${OUTPUT_FILE}"
+            "cat ./${DOMAIN}/${OUTPUT_FILE} | httpx -mc 403 -o ./${DOMAIN}/forbidden_${OUTPUT_FILE}"
     fi
 
     # =====[Clean up temporary subs_* files silently]=====
