@@ -70,7 +70,7 @@ run_virustotal() {
 
         local response=$(curl -s "https://www.virustotal.com/vtapi/v2/domain/report?apikey=${api_key}&domain=${domain}")
 
-        if echo "$response" | jq -r '.subdomains[]?' 2>/dev/null > "$output_file"; then
+        if echo "$response" | jq -r '.subdomains[]?' 2>/dev/null > "$output_file" && echo "$response" | jq -r '.detected_urls[].url?, .undetected_urls[][0]?' 2>/dev/null | sed -E 's#^[a-zA-Z]+://([^/]+).*#\1#; s#^//([^/]+).*#\1#' | sed 's/:.*$//' | grep -v '^$' | sort -u >> "$output_file"; then
             echo -ne "\033[K"
             echo -e "[${GREEN}✓${NC}] Running VirusTotal"
         else
@@ -80,6 +80,7 @@ run_virustotal() {
     else
         local response=$(curl -s "https://www.virustotal.com/vtapi/v2/domain/report?apikey=${api_key}&domain=${domain}")
         echo "$response" | jq -r '.subdomains[]?' 2>/dev/null > "$output_file"
+        echo "$response" | jq -r '.detected_urls[].url?, .undetected_urls[][0]?' 2>/dev/null | sed -E 's#^[a-zA-Z]+://([^/]+).*#\1#; s#^//([^/]+).*#\1#' | sed 's/:.*$//' | grep -v '^$' | sort -u >> "$output_file"
     fi
 }
 
