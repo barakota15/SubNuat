@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# ====[Get source]====
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+
 # =====[Set time] ====
 SECONDS=0
 
@@ -400,7 +409,7 @@ for ((i=0; i <= $#; i++)); do
                 cat "$FFUF_WORDLIST" | sort -u | tee "$FFUF_WORDLIST" &> /dev/null
             fi
         else
-            FFUF_WORDLIST="./wordlist/subdomains.txt"
+            FFUF_WORDLIST="$SCRIPT_DIR/wordlist/subdomains.txt"
         fi
         TOOLS+=("ffuf")
         break
