@@ -38,21 +38,41 @@ run_command() {
     local command=$2
     if [ "$SILENT" = false ]; then
         echo -ne "[${YELLOW}*${NC}] $description\r"
-        if [[ "$description" != "Running subenum" ]]; then
-            if eval "$command" &> /dev/null; then
-                echo -ne "\033[K"
-                echo -e "[${GREEN}✓${NC}] $description"
+        if [ "$DEBUG" = true ]; then
+            if [[ "$description" != "Running subenum" ]]; then
+                if eval "$command"; then
+                    echo -ne "\033[K"
+                    echo -e "[${GREEN}✓${NC}] $description"
+                else
+                    echo -ne "\033[K"
+                    echo -e "[${RED}X${NC}] $description"
+                fi
             else
-                echo -ne "\033[K"
-                echo -e "[${RED}X${NC}] $description"
+                if eval "$command"; then
+                    echo -ne "\033[K"
+                    echo -e "[${GREEN}✓${NC}] $description"
+                else
+                    echo -ne "\033[K"
+                    echo -e "[${GREEN}✓${NC}] $description"
+                fi
             fi
         else
-            if eval "$command" &> /dev/null; then
-                echo -ne "\033[K"
-                echo -e "[${GREEN}✓${NC}] $description"
+            if [[ "$description" != "Running subenum" ]]; then
+                if eval "$command" &> /dev/null; then
+                    echo -ne "\033[K"
+                    echo -e "[${GREEN}✓${NC}] $description"
+                else
+                    echo -ne "\033[K"
+                    echo -e "[${RED}X${NC}] $description"
+                fi
             else
-                echo -ne "\033[K"
-                echo -e "[${GREEN}✓${NC}] $description"
+                if eval "$command" &> /dev/null; then
+                    echo -ne "\033[K"
+                    echo -e "[${GREEN}✓${NC}] $description"
+                else
+                    echo -ne "\033[K"
+                    echo -e "[${GREEN}✓${NC}] $description"
+                fi
             fi
         fi
     else
@@ -113,6 +133,7 @@ show_help() {
     echo "     -ls, --list-sources                       List all supported subdomain sources"
     echo "     -s, --silent                              Silent mode - only outputs subdomains without extra logs"
     echo "     -nc, --no-color                           Disable colored output"
+    echo "          --debug-mode                         Enable debug mode and show detailed tool logs"
     echo ""
     echo -e "${NC}"
     exit 0
@@ -143,7 +164,7 @@ done
 
 # =====[Check for flags]=====
 for arg in "$@"; do
-    if [[ "$arg" == "--help" || "$arg" == "-h" || "$arg" == "--version" || "$arg" == "-v" || "$arg" == "--list-sources" || "$arg" == "-ls" || "$arg" == "--silent" || "$arg" == "-s" || "$arg" == "--no-color" || "$arg" == "-nc" || "$arg" == "--api" || "$arg" == "--no-httpx" || "$arg" == "--output" || "$arg" == "-o" || "$arg" == "--domains" || "$arg" == "-D" || "$arg" == "--domain" || "$arg" == "--ffuf" || "$arg" == "-d" || "$arg" == "--tools" || "$arg" == "-t" || "$arg" == "--filter" || "$arg" == "-f" ]]; then
+    if [[ "$arg" == "--help" || "$arg" == "-h" || "$arg" == "--version" || "$arg" == "-v" || "$arg" == "--list-sources" || "$arg" == "-ls" || "$arg" == "--silent" || "$arg" == "-s" || "$arg" == "--no-color" || "$arg" == "-nc" || "$arg" == "--debug-mode" || "$arg" == "--api" || "$arg" == "--no-httpx" || "$arg" == "--output" || "$arg" == "-o" || "$arg" == "--domains" || "$arg" == "-D" || "$arg" == "--domain" || "$arg" == "--ffuf" || "$arg" == "-d" || "$arg" == "--tools" || "$arg" == "-t" || "$arg" == "--filter" || "$arg" == "-f" ]]; then
         continue
     else
         if [[ "$arg" == -* ]]; then
@@ -197,6 +218,13 @@ for arg in "$@"; do
         CYAN='\033[0m'
         NC='\033[0m'
         break
+    fi
+done
+
+DEBUG=false
+for arg in "$@"; do
+    if [[ "$arg" == "--debug-mode" ]]; then
+        DEBUG=true
     fi
 done
 
@@ -507,10 +535,10 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
     if contains "knock" "${FILTERED_TOTAL[@]}"; then
         run_command "Running knock" \
             "knock -d \"$DOMAIN\" --recon"
-
+        
         # =====[Extract domains from JSON if found - Without echo]=====
         JSON_FILE=$(ls ${DOMAIN}*.json 2>/dev/null | head -n 1)
-    
+
         if [ -n "$JSON_FILE" ]; then
             jq -r '..|.domain? // empty' "$JSON_FILE" > ./${DOMAIN}/subs_knock.txt 2>/dev/null
         fi
@@ -542,7 +570,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
     if [ "$HTTPX" = true ]; then
         run_command "Probing active subdomains with httpx (200 OK)" \
             "cat ./${DOMAIN}/${OUTPUT_FILE} | httpx -mc 200 -o ./${DOMAIN}/active_${OUTPUT_FILE}"
-        
+
         run_command "Probing active subdomains with httpx (403 Forbidden)" \
             "cat ./${DOMAIN}/${OUTPUT_FILE} | httpx -mc 403 -o ./${DOMAIN}/forbidden_${OUTPUT_FILE}"
     fi
@@ -556,8 +584,6 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
         cat ./${DOMAIN}/${OUTPUT_FILE} | sort -u
     fi
 done
-
-
 
 # =====[Calculate time]=====
 total_time=$SECONDS
