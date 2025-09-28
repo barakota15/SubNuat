@@ -67,7 +67,7 @@ Make sure the following tools are installed and accessible in your system `PATH`
    ```bash
    chmod +x subnaut.sh
    ```
-5. Add to PATH:
+5. (Optional) Add to PATH for easy usage:
    ```bash
    sudo ln -s $(pwd)/subnaut.sh /usr/local/bin/subnaut
    ```
