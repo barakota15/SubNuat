@@ -96,6 +96,7 @@ Make sure the following tools are installed and accessible in your system `PATH`
 - `-ls, --list-sources` : List all supported subdomain sources
 - `-s, --silent` : Silent mode - only outputs subdomains without extra logs
 - `-nc, --no-color` : Disable colored output
+- `--debug-mode` : Enable debug mode and show detailed tool logs
   
 ---
 
