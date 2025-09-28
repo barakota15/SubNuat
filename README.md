@@ -79,17 +79,22 @@ Make sure the following tools are installed and accessible in your system `PATH`
 ```bash
 ./subnaut.sh [flags]
 ```
+
 ### Input Flags:
 - `-d, --domain <domain>` : Target domain for enumeration
 - `-D, --domains <file>` : File containing list of domains
 - `-ffuf <file>` : Subdomains wordlist for ffuf (default: ./wordlist/subdomains.txt)
 - `--api <API key>` : VirusTotal API key (optional)
+
 ### Filtering Flags:
 - `-t, --tools [tool1,tool2,...]` : Specify which tools to use (default: all)
 - `-f, --filter [tool1,tool2,...]` : Exclude specific tools from enumeration
+
 ### Output Flags:
 - `-o, --output <file>` : Output file name (default: subdomains.txt)
 - `--no-httpx` : Skip active probing with httpx
+- By default, `httpx` probes discovered subdomins for HTTP status codes 200, and 403
+
 ### Debug & Help Flags:
 - `-h, --help` : Show help message and exit
 - `-v, --version` : Show version information
@@ -114,14 +119,21 @@ Make sure the following tools are installed and accessible in your system `PATH`
 ---
 
 ## Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests for improvements or bug fixes.
+
+Contributions are welcome! You can:
+
+* Report issues or suggest enhancements
+* Submit pull requests with fixes, new features, documentation improvements
+
+Please follow the existing coding and formatting style.
 
 ---
 
 ## License
-This project is licensed under the [MIT License](https://github.com/barakota15/DETS-Correction-System/blob/main/LICENSE). See the `LICENSE` file for details.
+This project is licensed under the [MIT License](https://github.com/barakota15/SubNaut?tab=MIT-1-ov-file). See the `LICENSE` file for details.
 
 ---
 
 ## Author
-SubNaut by Barakota15 — version 1.1
+
+**SubNaut** by *Barakota15* — version 1.1
