@@ -241,7 +241,6 @@ for ((i=0; i <= $#; i++)); do
             if [[ -n "$next_arg" && "$next_arg" != -* ]]; then
                 if [[ "$next_arg" =~ ^[a-zA-Z0-9.-]+$ && "$next_arg" == *.* ]]; then
                     DOMAIN_LIST+=("$next_arg")
-                    ((i+=2))
                     continue
                 else
                     echo -e "[${RED}X${NC}] Invalid domain format: '$next_arg'."
@@ -275,7 +274,6 @@ for ((i=0; i <= $#; i++)); do
                         echo -e "[${RED}X${NC}] Invalid domain in file: '$line'"
                     fi
                 done < "$DOMAIN_FILE"
-                ((i+=2))
                 continue
             else
                 echo -e "[${RED}X${NC}] No domain file specified after $arg"
