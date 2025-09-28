@@ -509,6 +509,14 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
     if contains "knock" "${FILTERED_TOTAL[@]}"; then
         run_command "Running knock" \
             "knock -d \"$DOMAIN\" --recon"
+
+        # =====[Extract domains from JSON if found - Without echo]=====
+        JSON_FILE=$(ls ${DOMAIN}*.json 2>/dev/null | head -n 1)
+    
+        if [ -n "$JSON_FILE" ]; then
+            jq -r '..|.domain? // empty' "$JSON_FILE" > ./${DOMAIN}/subs_knock.txt 2>/dev/null
+        fi
+        rm -f ${DOMAIN}*.json
     fi
 
     if contains "findomain" "${FILTERED_TOTAL[@]}"; then
@@ -527,14 +535,6 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
     fi
 
     echo ""
-
-    # =====[Extract domains from JSON if found - Without echo]=====
-    JSON_FILE=$(ls ${DOMAIN}*.json 2>/dev/null | head -n 1)
-
-    if [ -n "$JSON_FILE" ]; then
-        jq -r '..|.domain? // empty' "$JSON_FILE" > ./${DOMAIN}/subs_knock.txt 2>/dev/null
-    fi
-    rm -f ${DOMAIN}*.json
 
     # =====[Combine all subs_*.txt into subdomains.txt with echo]=====
     run_command "Combining results into ./${DOMAIN}/${OUTPUT_FILE}" \
