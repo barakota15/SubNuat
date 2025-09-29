@@ -575,7 +575,7 @@ for DOMAIN in "${DOMAIN_LIST[@]}"; do
 
     # =====[Clean up temporary subs_* files silently]=====
     echo ""
-    rm -f ./${DOMAIN}/subs_*.txt resume*
+    rm -f ./${DOMAIN}/subs_*.txt resume* &> /dev/null
 
     # =====[Show results]=====
     if [ "$SILENT" = true ]; then
